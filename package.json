@@ -1,1 +1,19 @@
-{"name":"lantern-vale","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"vite --host 127.0.0.1 --port 5209 --strictPort","build":"tsc --noEmit && vite build","typecheck":"tsc --noEmit","test":"node --experimental-strip-types --test tests/*.test.ts","preview":"node serve.mjs"},"devDependencies":{"@types/node":"^24.0.0","typescript":"^5.9.3","vite":"^7.1.0"}}
+{
+  "name": "lantern-vale",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5209 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "preview": "node serve.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
+  }
+}
