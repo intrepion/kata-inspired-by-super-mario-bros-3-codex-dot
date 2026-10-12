@@ -1,0 +1,3 @@
+# A deterministic, compact campaign
+
+Accepted: the original Lantern Vale setting uses six trails and a three-beacon finale, rather than copying existing characters or layouts. The simulation is independent of rendering, uses 120 Hz steps with swept-axis collisions, and owns all progression decisions. Canvas art and procedural audio avoid external asset dependencies. Flat rectangular surfaces make routes predictable; moving platforms and slopes are excluded to keep the full campaign testable. Progress persists only at level exits; expedition collectibles and powers survive checkpoint retries, so optional rewards cannot be permanently lost.
