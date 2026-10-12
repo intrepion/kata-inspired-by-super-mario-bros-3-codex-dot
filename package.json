@@ -8,7 +8,9 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "preview": "node serve.mjs"
+    "preview": "node serve.mjs",
+    "serve:detached": "node scripts/start.mjs",
+    "format": "prettier --write src tests scripts index.html serve.mjs"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
