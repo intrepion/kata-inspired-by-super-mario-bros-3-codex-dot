@@ -11,6 +11,9 @@ export function tone(event: string, enabled: boolean) {
     const now = context.currentTime;
     const notes: Record<string, number> = {
       jump: 420,
+      flight: 720,
+      flap: 490,
+      "power-ready": 960,
       mote: 880,
       seal: 1100,
       sail: 650,

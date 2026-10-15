@@ -65,7 +65,21 @@ function stats() {
     "♥ ".repeat(game.player.hearts) + "♡ ".repeat(3 - game.player.hearts);
   $("motes").textContent =
     `✦ ${game.level.pickups.filter((p) => p.kind === "mote" && game!.collected.has(p.id)).length}`;
-  $("power").textContent = game.player.sail ? "SAIL READY" : "SAIL —";
+  const p = game.player;
+  $("power").textContent =
+    p.flight > 0
+      ? `FLIGHT ${p.flight.toFixed(1)}s · TAP JUMP`
+      : p.power === 1
+        ? p.sail
+          ? "POWER FULL · TAP JUMP"
+          : "POWER FULL · NO SAIL"
+        : `RUN ${Math.floor(p.power * 100)}% · ${p.sail ? "SAIL" : "NO SAIL"}`;
+  $("power").setAttribute(
+    "aria-label",
+    p.flight > 0
+      ? `Powered flight ${p.flight.toFixed(1)} seconds remaining. Tap jump to flap.`
+      : `Run power ${Math.floor(p.power * 100)} percent. ${p.sail ? "Sail equipped." : "Find a sail feather to fly."}`,
+  );
 }
 function map() {
   clearInputs();
@@ -172,6 +186,9 @@ const keyMap: Record<string, string> = {
   ArrowUp: "jump",
   w: "jump",
   W: "jump",
+  Shift: "run",
+  x: "run",
+  X: "run",
 };
 addEventListener("keydown", (e) => {
   if ((e.target as HTMLElement).tagName === "BUTTON" && e.key === " ") return;
@@ -194,6 +211,7 @@ function input(): Input {
     left: values.includes("left"),
     right: values.includes("right"),
     jump: values.includes("jump"),
+    run: values.includes("run"),
   };
 }
 for (const b of document.querySelectorAll<HTMLButtonElement>("[data-key]")) {
@@ -233,7 +251,13 @@ function frame(now: number) {
       for (const event of game.events) {
         tone(event, sound);
         if (event === "sail")
-          showToast("Sail found! Hold jump while falling to glide.");
+          showToast(
+            "Sail found! Run to full power, then jump and tap jump to fly.",
+          );
+        if (event === "power-ready" && game.player.sail)
+          showToast(
+            "Power full! Jump, then tap jump to flap for three seconds.",
+          );
         if (event === "seal")
           showToast("Moon seal found — a secret worth the climb.");
         if (event === "checkpoint")

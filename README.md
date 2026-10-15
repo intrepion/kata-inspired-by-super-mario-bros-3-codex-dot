@@ -8,9 +8,10 @@ The inspiration is the feel of a classic world-map platform adventure. All chara
 
 The production build is served at **http://127.0.0.1:5209**. This is a loopback-only session process. It has no boot or login autostart and does not publish the game online. The repository is private.
 
-- Move: **A / D** or **left / right arrows**.
+- Walk: **A / D** or **left / right arrows**. Hold **Shift / X** or the **Hold Run** button to accelerate and fill run power.
 - Jump: **Space / W / Up**. Hold for a high jump, release for a hop.
-- With a sail feather, hold jump while falling to glide.
+- With a sail feather and full run power, jump while running, then tap jump repeatedly for three seconds of powered ascent. Hold jump while falling to glide after power ends.
+- Glass Orchard has an optional cloud landing and moon seal above the lower route.
 - Pause: **P / Escape** or the Pause button.
 - Restart clears the current expedition. World map cancels the expedition.
 - Touch/pointer controls are below the game. Mute and reduced-motion controls are in the header.
@@ -51,7 +52,7 @@ The detached starter reports an existing Lantern Vale server without creating a 
 
 ## Engineering evidence
 
-[Specification](docs/SPEC.md), [domain glossary](GLOSSARY.md), [decision record](docs/adr/0001-deterministic-campaign.md), [QA evidence and limits](docs/QA.md), and [independent reviews](docs/REVIEWS.md).
+[Run/flight fidelity evidence and normal-input acceptance](docs/FLIGHT_FIDELITY.md), [Specification](docs/SPEC.md), [domain glossary](GLOSSARY.md), [decision record](docs/adr/0001-deterministic-campaign.md), [QA evidence and limits](docs/QA.md), and [independent reviews](docs/REVIEWS.md).
 
 `src/simulation.ts` is the deterministic public simulation boundary. `src/levels.ts` defines original trails; rendering, audio and persistence live in separate modules. The 120 Hz clock caps elapsed time and drops its accumulator on pause. The browser clears key and pointer input on blur/visibility loss and requires explicit resume. Rectangular collision surfaces use substeps no longer than eight pixels. Slopes and moving platforms are intentionally outside this compact campaign.
 

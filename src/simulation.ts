@@ -1,5 +1,10 @@
 import { makeLevel, type Level, type Rect, type Surface } from "./levels.ts";
-export type Input = { left: boolean; right: boolean; jump: boolean };
+export type Input = {
+  left: boolean;
+  right: boolean;
+  jump: boolean;
+  run?: boolean;
+};
 export type Player = Rect & {
   vx: number;
   vy: number;
@@ -10,6 +15,9 @@ export type Player = Rect & {
   invulnerable: number;
   sail: boolean;
   facing: number;
+  power: number;
+  flight: number;
+  flap: number;
 };
 export type Game = {
   level: Level;
@@ -43,6 +51,9 @@ export function createGame(index: number): Game {
       invulnerable: 0,
       sail: false,
       facing: 1,
+      power: 0,
+      flight: 0,
+      flap: 0,
     },
     time: 0,
     checkpoint: false,
@@ -68,6 +79,7 @@ export function retry(g: Game) {
   p.grounded = true;
   p.buffer = 0;
   p.coyote = 0.1;
+  p.power = p.flight = p.flap = 0;
   g.jumpHeld = false;
   g.deaths++;
   g.events.push("retry");
@@ -76,6 +88,7 @@ function hurt(g: Game) {
   const p = g.player;
   if (p.invulnerable > 0) return;
   p.hearts--;
+  p.power = p.flight = p.flap = 0;
   p.invulnerable = 1.4;
   p.vx = -p.facing * 180;
   p.vy = -220;
@@ -92,9 +105,15 @@ function move(
 ) {
   const parts = Math.max(1, Math.ceil(Math.abs(amount) / 8));
   for (let i = 0; i < parts; i++) {
+    const previousBottom = p.y + p.h;
     p[axis] += amount / parts;
     for (const s of platforms) {
       if ((s.broken !== undefined && s.broken > 0.6) || !overlaps(p, s))
+        continue;
+      if (
+        s.oneWay &&
+        (axis === "x" || amount <= 0 || previousBottom > s.y + 0.01)
+      )
         continue;
       if (axis === "x" && (s.kind === "spring" || s.kind === "conveyor"))
         continue;
@@ -120,6 +139,29 @@ function move(
     }
   }
 }
+function takeoff(g: Game, input: Input) {
+  const p = g.player,
+    direction = Number(input.right) - Number(input.left);
+  const powered =
+    p.sail &&
+    p.power >= 1 &&
+    input.run &&
+    direction !== 0 &&
+    Math.sign(p.vx) === direction &&
+    Math.abs(p.vx) >= 270;
+  p.vy = -570;
+  p.grounded = false;
+  p.coyote = 0;
+  p.buffer = 0;
+  p.power = 0;
+  p.flight = 0;
+  if (powered) {
+    p.flight = 3;
+    p.flap = 0.18;
+    g.events.push("flight");
+  }
+  g.events.push("jump");
+}
 export function step(g: Game, input: Input, dt = DT) {
   if (g.status !== "playing") return;
   // The public seam accepts a bounded step, never elapsed wall time.
@@ -129,40 +171,57 @@ export function step(g: Game, input: Input, dt = DT) {
   g.time += dt;
   const p = g.player;
   p.invulnerable = Math.max(0, p.invulnerable - dt);
+  p.flight = Math.max(0, p.flight - dt);
+  p.flap = Math.max(0, p.flap - dt);
   p.buffer = Math.max(0, p.buffer - dt);
   p.coyote = p.grounded ? 0.1 : Math.max(0, p.coyote - dt);
-  if (input.jump && !g.jumpHeld) p.buffer = 0.12;
-  if (!input.jump && g.jumpHeld && p.vy < -200) p.vy = -200;
+  const jumpPressed = input.jump && !g.jumpHeld;
+  if (jumpPressed) p.buffer = 0.12;
+  if (jumpPressed && p.flight > 0 && !p.grounded) {
+    p.vy = Math.min(p.vy, -280);
+    p.flap = 0.18;
+    p.buffer = 0;
+    g.events.push("flap");
+  }
+  if (!input.jump && g.jumpHeld && p.vy < -200 && p.flight === 0) p.vy = -200;
   g.jumpHeld = input.jump;
   if (p.buffer > 0 && p.coyote > 0) {
-    p.vy = -570;
-    p.grounded = false;
-    p.coyote = 0;
-    p.buffer = 0;
-    g.events.push("jump");
+    takeoff(g, input);
   }
   const direction = Number(input.right) - Number(input.left);
   if (direction) p.facing = direction;
-  const target = direction * 290;
+  const target = direction * (input.run ? 290 : 170);
   const acceleration = (direction ? 1900 : 2400) * dt;
   p.vx += Math.max(-acceleration, Math.min(acceleration, target - p.vx));
   const previousBottom = p.y + p.h;
   p.vy = Math.min(
-    p.vy + 1500 * dt,
+    p.vy + (p.flight > 0 ? 850 : 1500) * dt,
     p.sail && input.jump && p.vy > 0 ? 120 : 720,
   );
   const drift = p.grounded ? 0 : g.level.wind;
   p.grounded = false;
   move(p, (p.vx + drift) * dt, "x", g.level.platforms, g, dt);
+  const unclampedX = p.x;
   p.x = Math.max(0, Math.min(g.level.width - p.w, p.x));
+  if (p.x !== unclampedX) p.vx = 0;
   move(p, p.vy * dt, "y", g.level.platforms, g, dt);
-  if (p.grounded && p.buffer > 0) {
-    p.vy = -570;
-    p.grounded = false;
-    p.coyote = 0;
-    p.buffer = 0;
-    g.events.push("jump");
+  if (p.grounded) {
+    p.flight = 0;
+    p.flap = 0;
   }
+  if (p.grounded && p.buffer > 0) {
+    takeoff(g, input);
+  }
+  if (p.grounded) {
+    const charging =
+      !!input.run &&
+      direction !== 0 &&
+      Math.sign(p.vx) === direction &&
+      Math.abs(p.vx) >= 270;
+    const before = p.power;
+    p.power = Math.max(0, Math.min(1, p.power + (charging ? 0.7 : -2) * dt));
+    if (before < 1 && p.power === 1) g.events.push("power-ready");
+  } else p.power = 0;
   for (const s of g.level.platforms)
     if (s.broken !== undefined) {
       s.broken += dt;

@@ -12,7 +12,11 @@
 
 **Waystone**: A safe mid-trail place from which Mica returns after falling.
 
-**Sail**: A feather power that slows a falling jump while jump is held.
+**Sail**: A feather power that permits short powered flight after a full-speed run-up, then slows a falling jump while jump is held.
+
+**Run power**: Speed-built charge earned only while running on a surface. Full power plus a sail enables one three-second flight; new jump presses flap upward.
+
+**Cloud landing**: The optional one-way high platform in Glass Orchard, reached by powered flight and holding the same stable moon-seal reward identity.
 
 **Trail**: A campaign level unlocked by restoring the previous lantern.
 

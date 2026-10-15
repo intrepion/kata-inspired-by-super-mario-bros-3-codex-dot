@@ -27,7 +27,7 @@ for (let index = 0; index < 7; index++)
         heldFor = 0.5;
         cooldown = 0.8;
       }
-      step(g, { left: false, right: true, jump: heldFor > 0 });
+      step(g, { left: false, right: true, jump: heldFor > 0, run: true });
       heldFor = Math.max(0, heldFor - DT);
     }
     assert.equal(g.status, "won", `x=${g.player.x}, deaths=${g.deaths}`);

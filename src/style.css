@@ -320,8 +320,12 @@ canvas {
   background: #e7eddf;
   font-size: 17px;
 }
+.touch-controls .run {
+  width: 80px;
+  font-size: 10px;
+}
 .touch-controls .jump {
-  width: 125px;
+  width: 100px;
   font-size: 10px;
   letter-spacing: 1px;
 }
@@ -341,7 +345,10 @@ canvas {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
-  white-space: nowrap;
+  white-space: normal;
+  width: max-content;
+  max-width: 90%;
+  text-align: center;
 }
 #toast.visible {
   opacity: 1;
@@ -577,5 +584,28 @@ footer {
     right: 12px;
     font-size: 6px;
     line-height: 1.5;
+  }
+}
+
+@media (max-width: 420px) {
+  .touch-controls > div {
+    gap: 5px;
+  }
+  .touch-controls button {
+    width: 45px;
+  }
+  .touch-controls .run {
+    width: 65px;
+  }
+  .touch-controls .jump {
+    width: 86px;
+  }
+  #power {
+    max-width: 105px;
+    white-space: normal;
+    text-align: right;
+  }
+  #stats {
+    align-items: center;
   }
 }

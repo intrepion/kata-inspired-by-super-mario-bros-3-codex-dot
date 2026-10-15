@@ -183,6 +183,7 @@ export function renderGame(
     p = g.player,
     t = reduced ? 0 : g.time;
   const camera = Math.max(0, Math.min(l.width - W, p.x - W * 0.32));
+  const cameraY = Math.min(0, p.y - 120);
   c.fillStyle = l.sky;
   c.fillRect(0, 0, W, H);
   // Distinct worlds, with layered rolling silhouettes and architectural landmarks.
@@ -217,7 +218,7 @@ export function renderGame(
     } else tree(c, x, 455, 0.9 + (i % 3) * 0.25, l.leaf + "50");
   }
   c.save();
-  c.translate(-camera, 0);
+  c.translate(-camera, -cameraY);
   // Reflective water runs underneath the stepping stones.
   if (g.index === 1 || g.index === 5) {
     c.fillStyle = "#579caa";
@@ -235,6 +236,12 @@ export function renderGame(
   }
   for (const s of l.platforms) {
     if (s.broken !== undefined && s.broken > 0.6) continue;
+    if (s.oneWay) {
+      for (let x = s.x + 14; x < s.x + s.w; x += 28)
+        ellipse(c, x, s.y + 8, 24, 10, "#fff6dd");
+      line(c, s.x, s.y, s.x + s.w, s.y, l.accent, 3);
+      continue;
+    }
     const ground = s.h > 50;
     round(c, s.x, s.y, s.w, s.h, ground ? 0 : 5, ground ? l.leaf : l.ink);
     round(
@@ -366,11 +373,12 @@ export function renderGame(
     round(c, -13, -15, 12, 13, 3, "#b97166");
     line(c, -7, -16, 14, -16, "#f0a194", 5);
     line(c, -7, -16, -19 - Math.sin(t * 10) * 3, -12, "#f0a194", 4);
-    if (p.sail && !p.grounded && g.jumpHeld && p.vy > 0) {
+    if (p.sail && !p.grounded && (p.flight > 0 || (g.jumpHeld && p.vy > 0))) {
       c.fillStyle = "#fff2c3";
       c.beginPath();
-      c.moveTo(-29, -33);
-      c.quadraticCurveTo(0, -63, 31, -33);
+      const flap = p.flap > 0 ? Math.sin(p.flap * 35) * 8 : 0;
+      c.moveTo(-29, -33 + flap);
+      c.quadraticCurveTo(0, -63, 31, -33 + flap);
       c.lineTo(0, -36);
       c.fill();
       line(c, -29, -33, -7, -18, "#85a79a", 1);
@@ -386,6 +394,25 @@ export function renderGame(
     }
   }
   c.restore();
+  round(c, 22, 40, 226, 41, 7, "#173d40df");
+  c.font = "bold 11px system-ui";
+  c.fillStyle = "#fff0bd";
+  c.fillText(
+    p.flight > 0 ? `POWERED FLIGHT · ${p.flight.toFixed(1)}s` : "RUN POWER",
+    31,
+    56,
+  );
+  for (let i = 0; i < 6; i++)
+    round(
+      c,
+      31 + i * 25,
+      63,
+      19,
+      8,
+      2,
+      p.flight > 0 || p.power >= (i + 1) / 6 ? "#ffd985" : "#6a9280",
+    );
+  c.fillText(p.flight > 0 ? "TAP" : p.power === 1 ? "P!" : "P", 188, 71);
   if (g.index === 6) {
     c.fillStyle = l.ink;
     c.font = "bold 11px system-ui";

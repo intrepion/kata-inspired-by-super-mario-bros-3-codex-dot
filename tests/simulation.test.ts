@@ -18,7 +18,7 @@ test("a checkpoint retry restores a safe landing even when it is above a gap", (
   assert.equal(g.player.x, 620);
 });
 const idle = { left: false, right: false, jump: false },
-  right = { ...idle, right: true };
+  right = { ...idle, right: true, run: true };
 const run = (
   g: ReturnType<typeof createGame>,
   seconds: number,

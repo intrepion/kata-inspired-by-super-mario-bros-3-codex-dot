@@ -3,6 +3,7 @@ export type Surface = Rect & {
   kind?: "spring" | "conveyor" | "crumble";
   direction?: number;
   broken?: number;
+  oneWay?: boolean;
 };
 export type Pickup = Rect & {
   id: string;
@@ -54,7 +55,7 @@ const themes = [
   [
     "Glass Orchard",
     "03 · A windborne shortcut",
-    "Find a sail feather. Hold jump while falling to glide.",
+    "Find the feather. Hold Shift / X to fill run power; jump and tap jump to fly toward the cloud seal.",
     "#e4ddfa",
     "#574b86",
     "#9477b1",
@@ -245,6 +246,20 @@ export function makeLevel(index: number): Level {
         h: 40,
         kind: "beacon",
       });
+  if (index === 2) {
+    platforms.push({ x: 980, y: 110, w: 280, h: 18, oneWay: true });
+    for (const [id, x] of [
+      [`${index}-u3`, 1060],
+      [`${index}-u4`, 1170],
+    ] as const) {
+      const item = pickups.find((p) => p.id === id)!;
+      item.x = x;
+      item.y = 72;
+    }
+    const seal = pickups.find((p) => p.kind === "seal")!;
+    seal.x = 1110;
+    seal.y = 65;
+  }
   const enemies: Enemy[] =
     index === 6
       ? []
