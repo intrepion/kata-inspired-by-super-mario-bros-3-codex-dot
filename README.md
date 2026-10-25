@@ -57,3 +57,7 @@ The detached starter reports an existing Lantern Vale server without creating a 
 `src/simulation.ts` is the deterministic public simulation boundary. `src/levels.ts` defines original trails; rendering, audio and persistence live in separate modules. The 120 Hz clock caps elapsed time and drops its accumulator on pause. The browser clears key and pointer input on blur/visibility loss and requires explicit resume. Rectangular collision surfaces use substeps no longer than eight pixels. Slopes and moving platforms are intentionally outside this compact campaign.
 
 GitHub Actions runs tests, strict type checking, a production build, and dependency audit on every push.
+
+## Play online
+
+[Play the hosted game](https://intrepion.github.io/kata-inspired-by-super-mario-bros-3-codex-dot/)
