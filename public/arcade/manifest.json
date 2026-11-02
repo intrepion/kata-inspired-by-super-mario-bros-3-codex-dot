@@ -1,6 +1,47 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "gameId": "kata-inspired-by-super-mario-bros-3-codex-dot",
   "playUrl": "https://intrepion.github.io/kata-inspired-by-super-mario-bros-3-codex-dot/",
-  "screenshots": []
+  "screenshots": [
+    {
+      "path": "arcade/screenshots/ci-20261102-01.jpg",
+      "sha256": "181352945e3fceec54b6087545c30490f0f282f99c23e3255d030710107a7787",
+      "alt": "Lantern Vale gameplay, view 1",
+      "provenance": {
+        "kind": "ci_gameplay_capture",
+        "sourcePath": "arcade/capture-evidence/ci-20261102-01.png",
+        "sourceSha256": "6926fe86ccb3c9c30da1ecf9c51190cfb5c26ee2ce49a94e76ee31a2aa8e5319",
+        "captureCommit": "c6f4a837191bc458957166ea0eb3e135931ce4aa",
+        "workflowRunId": "41411490279",
+        "inputHashes": {
+          "index.html": "a3718206579fe7cef899d15011eed4974c286b5749920692c14a6a28847f33f7",
+          "assets/index-CWs21QtO.js": "4c8cc5ff1fd60520d0a3ddc89a75ae0811f1ce1cd6d28041fdcb41707c61530b",
+          "assets/index-Cp0xvV4-.css": "885c048daabfcb394bafa5589b43d7e86490aff4ed0b68e7da17d814752b4323"
+        },
+        "publishedFilesVerifiedAt": "2026-11-02T19:01:20Z",
+        "captureRecordPath": "arcade/capture-evidence/ci-20261102-record.json",
+        "captureRecordSha256": "225f2a4bb7e965d2b222a7a125214234f629fd7c48059cc6d985dc1518ff8500"
+      }
+    },
+    {
+      "path": "arcade/screenshots/ci-20261102-02.jpg",
+      "sha256": "3b5f1be2134cc02988b59c834b289b26fefdb15560ee57b66b9f6d25284d0a95",
+      "alt": "Lantern Vale gameplay, view 2",
+      "provenance": {
+        "kind": "ci_gameplay_capture",
+        "sourcePath": "arcade/capture-evidence/ci-20261102-02.png",
+        "sourceSha256": "6563356d62c8c0d784ffd726c14c1099eb1e1d18aaae2dffa08eb93361197fb3",
+        "captureCommit": "c6f4a837191bc458957166ea0eb3e135931ce4aa",
+        "workflowRunId": "41411490279",
+        "inputHashes": {
+          "index.html": "a3718206579fe7cef899d15011eed4974c286b5749920692c14a6a28847f33f7",
+          "assets/index-CWs21QtO.js": "4c8cc5ff1fd60520d0a3ddc89a75ae0811f1ce1cd6d28041fdcb41707c61530b",
+          "assets/index-Cp0xvV4-.css": "885c048daabfcb394bafa5589b43d7e86490aff4ed0b68e7da17d814752b4323"
+        },
+        "publishedFilesVerifiedAt": "2026-11-02T19:01:20Z",
+        "captureRecordPath": "arcade/capture-evidence/ci-20261102-record.json",
+        "captureRecordSha256": "225f2a4bb7e965d2b222a7a125214234f629fd7c48059cc6d985dc1518ff8500"
+      }
+    }
+  ]
 }

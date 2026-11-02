@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "workflowCommit": "6dbfbae563a662e58f92ca74c2887231497b2ef8",
+  "sourceCommit": "c6f4a837191bc458957166ea0eb3e135931ce4aa",
+  "runId": "41411490279",
+  "url": "http://127.0.0.1:4237/",
+  "inputs": {
+    "index.html": "a3718206579fe7cef899d15011eed4974c286b5749920692c14a6a28847f33f7",
+    "assets/index-CWs21QtO.js": "4c8cc5ff1fd60520d0a3ddc89a75ae0811f1ce1cd6d28041fdcb41707c61530b",
+    "assets/index-Cp0xvV4-.css": "885c048daabfcb394bafa5589b43d7e86490aff4ed0b68e7da17d814752b4323"
+  },
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 1280,
+    "height": 1000
+  },
+  "screenshots": [
+    "lantern-vale-01.png",
+    "lantern-vale-02.png"
+  ]
+}
