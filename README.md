@@ -61,3 +61,7 @@ GitHub Actions runs tests, strict type checking, a production build, and depende
 ## Play online
 
 [Play the hosted game](https://intrepion.github.io/kata-inspired-by-super-mario-bros-3-codex-dot/)
+
+## Arcade metadata
+
+See [docs/arcade-metadata.md](docs/arcade-metadata.md) for the game-owned manifest and screenshot provenance.
